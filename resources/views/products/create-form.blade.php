@@ -1,0 +1,46 @@
+@extends('products.main', [
+    'title' => 'Create',
+])
+
+@section('content')
+    <form action="{{ route('products.create') }}" method="post">
+        @csrf
+
+        <div class="app-cmp-form-detail">
+            <label for="app-inp-code">Code</label>
+            <input type="text" id="app-inp-code" name="code" value="{{ old('code') }}" required class="app-cl-code" />
+
+            <label for="app-inp-name">Name</label>
+            <input type="text" id="app-inp-name" name="name" value="{{ old('name') }}" required />
+
+            <label for="app-inp-category">Category</label>
+            <select id="app-inp-category" name="category" required>
+                <option value="">--- Please Select Category ---</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->code }}" @selected($category->code === old('category'))>
+                        [{{ $category->code }}] {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            <label for="app-inp-price">Price</label>
+            <input type="number" id="app-inp-price" name="price" value="{{ old('price') }}" step="any" required />
+
+            <label for="app-inp-description">Description</label>
+            <textarea id="app-inp-description" name="description" cols="80" rows="10" required>{{ old('description') }}</textarea>
+        </div>
+
+        <div class="app-cmp-form-actions">
+            <button type="submit" class="app-cl-primary app-cl-filled">
+                <i class="material-symbols-outlined">save</i>
+                Create
+            </button>
+            <a href="{{ session()->get('bookmarks.products.create-form', route('products.list')) }}">
+                <button type="button" class="app-cl-warn app-cl-filled">
+                    <i class="material-symbols-outlined">cancel</i>
+                    Cancel
+                </button>
+            </a>
+        </div>
+    </form>
+@endsection
